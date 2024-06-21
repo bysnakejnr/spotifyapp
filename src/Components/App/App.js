@@ -1,5 +1,6 @@
 import React, {useState} from "react";
 import styles from './App.module.css';
+import SearchResults from "../SearchResults/SearchResults";
 
 function App () {
     const [searchResults, setSearchResults] = useState([{
@@ -26,11 +27,11 @@ function App () {
         <h1>
           Mu<span className={styles.highlight}>S</span>ic by Baris Berber
         </h1>
-        <div className="App">
+        <div className={styles.App}>
           {/* <!-- Add a SearchBar component --> */}
 
           <div className={styles['App-playlist']}>
-            {/* <!-- Add a SearchResults component --> */}
+              <SearchResults userSearchResults={searchResults}/>
             {/* <!-- Add a Playlist component --> */}
           </div>
         </div>
