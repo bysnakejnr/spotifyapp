@@ -4,9 +4,8 @@ import Track from '../Track/Track'
 function Tracklist (props) {
     return (
         <div className={styles.Tracklist}>
-            {/* <!-- You will add a map method that renders a set of Track components  --> */}
             {props.userSearchResults.map(track=>(
-                <Track />
+                <Track track={track} key={track.id} onAdd={props.onAdd} isRemoval={props.isRemoval} onAdd={props.onAdd} onRemove={props.onRemove} />
             ))}
             <li>Track 1</li>
             <li>Track 2</li>
