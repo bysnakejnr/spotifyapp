@@ -5,12 +5,8 @@ function Tracklist (props) {
     return (
         <div className={styles.Tracklist}>
             {props.userSearchResults.map(track=>(
-                <Track track={track} key={track.id} onAdd={props.onAdd} isRemoval={props.isRemoval} onAdd={props.onAdd} onRemove={props.onRemove} />
+                <Track track={track} key={track.id} onAdd={props.onAdd} isRemoval={props.isRemoval} onRemove={props.onRemove} />
             ))}
-            <li>Track 1</li>
-            <li>Track 2</li>
-            <li>Track 3</li>
-            <li>Track 4</li>
         </div>
     );
 }

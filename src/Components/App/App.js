@@ -57,9 +57,6 @@ function App (props) {
             setPlaylistTracks(newTrack)
         }
     }
-    function addTrack(track) {
-
-    }
 
     function removeTrack(track){
         const existingTrack = playlistTracks.filter((t)=> t.id !==track.id);
@@ -77,7 +74,7 @@ function App (props) {
           <div className={styles['App-playlist']}>
               <SearchResults userSearchResults={searchResults} onAdd={addTrack} isRemoval={true}/>
 
-              <Playlist playlistName={playlistName} playlistTracks={playlistTracks} onRemove={props.onRemove}/>
+              <Playlist playlistName={playlistName} playlistTracks={playlistTracks} onRemove={removeTrack}/>
           </div>
         </div>
       </div>
