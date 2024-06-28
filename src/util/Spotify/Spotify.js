@@ -1,7 +1,7 @@
 let accessToken = "";
 const clientID = "3eb0e64711b4468fb3c97b9e9d0d2ab2";
-const redirectUrl = "http://localhost:3000";
-// const redirectUrl = "https://syphersjammmingproject.surge.sh";
+// const redirectUrl = "http://localhost:3000";
+const redirectUrl = "https://main--barismusic.netlify.app";
 
 const Spotify = {
     getAccessToken() {
