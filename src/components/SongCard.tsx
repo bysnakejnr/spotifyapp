@@ -41,7 +41,6 @@ export function SongCard({ song, onAdd, isAdded }: SongCardProps) {
         </div>
         
         <div className="flex items-center gap-3 flex-shrink-0">
-          <span className="text-sm text-zinc-400">{song.duration}</span>
           <Button
             onClick={() => onAdd(song)}
             disabled={isAdded}

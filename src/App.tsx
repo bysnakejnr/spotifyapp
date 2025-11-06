@@ -77,7 +77,7 @@ export default function App() {
         </div>
 
         {/* Two Column Layout */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 h-[calc(100vh-240px)]">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 min-h-full">
           {/* Search Results */}
           <div className="bg-gradient-to-b from-zinc-900/50 to-zinc-900/30 backdrop-blur-sm rounded-lg border border-zinc-800 p-6">
             <SearchResults

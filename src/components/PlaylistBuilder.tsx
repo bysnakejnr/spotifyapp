@@ -87,7 +87,8 @@ export function PlaylistBuilder({ songs, onRemoveSong, onClearPlaylist }: Playli
         <div className="flex-1 overflow-hidden">
           <div className="mb-3 flex items-center justify-between">
             <p className="text-sm text-zinc-400">{songs.length} song{songs.length !== 1 ? 's' : ''}</p>
-            <p className="text-xs text-zinc-500">Drag to reorder</p>
+            {/*drag component for later*/}
+            {/*<p className="text-xs text-zinc-500">Drag to reorder</p>*/}
           </div>
           <ScrollArea className="h-[calc(100%-32px)]">
             <div className="space-y-2 pr-4">

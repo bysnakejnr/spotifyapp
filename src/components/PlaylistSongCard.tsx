@@ -18,7 +18,7 @@ export function PlaylistSongCard({ song, onRemove, index }: PlaylistSongCardProp
           <GripVertical className="h-4 w-4" />
           <span className="text-sm min-w-[20px]">{index + 1}</span>
         </div>
-        
+
         <div className="relative h-12 w-12 flex-shrink-0 overflow-hidden rounded">
           <ImageWithFallback
             src={song.albumArt}
@@ -26,14 +26,14 @@ export function PlaylistSongCard({ song, onRemove, index }: PlaylistSongCardProp
             className="h-full w-full object-cover"
           />
         </div>
-        
+
         <div className="flex-1 min-w-0">
           <h4 className="truncate text-white text-sm">{song.name}</h4>
           <p className="truncate text-xs text-zinc-400">{song.artist}</p>
         </div>
-        
+
         <div className="flex items-center gap-2 flex-shrink-0">
-          <span className="text-xs text-zinc-400">{song.duration}</span>
+
           <Button
             onClick={() => onRemove(song.id)}
             variant="ghost"
