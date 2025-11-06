@@ -1,7 +1,7 @@
 # 🎵 Spotify Playlist Creator
 
 
-## Live Version : https://main--barismusic.netlify.app/
+## Live Version : https://barismusic.netlify.app/
 
 A modern web app that helps you **find songs, connect to your Spotify account**, and **create custom playlists** — all in one place.  
 Built with **React + Vite** and the **Spotify Web API**.
