@@ -6,6 +6,7 @@ import { Song } from "./components/SongCard";
 import { Music } from "lucide-react";
 import { Toaster } from "./components/ui/sonner";
 import { Spotify } from "./util/Spotify";
+const clientID = import.meta.env.CLIENT_ID;
 
 
 
@@ -21,22 +22,23 @@ export default function App() {
   }
 
   const handleAddSong = (song: Song) => {
-    if (!playlist.find((s) => s.id === song.id)) {
+    if (!playlist.find((s: Song) => s.id === song.id)) {
       setPlaylist([...playlist, song]);
     }
   };
 
   const handleRemoveSong = (id: string) => {
-    setPlaylist(playlist.filter((song) => song.id !== id));
+    setPlaylist(playlist.filter((song: Song) => song.id !== id));
   };
 
   const handleClearPlaylist = () => {
     setPlaylist([]);
   };
 
-  const addedSongIds = new Set(playlist.map((song) => song.id));
+  const addedSongIds = new Set(playlist.map((song: Song) => song.id));
 
   return (
+
     <div className="min-h-screen bg-gradient-to-br from-zinc-950 via-zinc-900 to-zinc-950">
       <Toaster position="top-center" richColors />
       

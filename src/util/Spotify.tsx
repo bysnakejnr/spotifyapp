@@ -1,5 +1,5 @@
 let accessToken;
-const clientID = "3eb0e64711b4468fb3c97b9e9d0d2ab2";
+const clientID = import.meta.env.VITE_CLIENT_ID;
 const redirectURI = "http://localhost:3000";
 import { toast } from "sonner";
 
