@@ -1,4 +1,4 @@
-import { useState } from "react";
+import {useEffect, useState} from "react";
 import { SearchBar } from "./components/SearchBar";
 import { SearchResults } from "./components/SearchResults";
 import { PlaylistBuilder } from "./components/PlaylistBuilder";
@@ -6,6 +6,7 @@ import { Song } from "./components/SongCard";
 import { Music } from "lucide-react";
 import { Toaster } from "./components/ui/sonner";
 import { Spotify } from "./util/Spotify";
+import {toast} from "sonner";
 const clientID = import.meta.env.CLIENT_ID;
 
 
@@ -14,6 +15,18 @@ export default function App() {
   const [searchResults, setSearchResults] = useState<Song[]>([]);
   const [playlist, setPlaylist] = useState<Song[]>([]);
   const [isSearched, setIsSearched] = useState(false);
+
+  const [loggedIn, setLoggedIn] = useState(false);
+
+  useEffect(() => {
+    // Check if token is in URL when the component mounts
+    const tokenInURL = window.location.href.match(/access_token=([^&]*)/);
+    if (tokenInURL) {
+      Spotify.getAccessToken(); // grabs token and cleans URL
+      toast.success("✅ You’re now logged in with Spotify!");
+      setLoggedIn(true);
+    }
+  }, []);
 
   function search(query:string) {
     Spotify.search(query).then((results) => setSearchResults(results));
@@ -56,7 +69,6 @@ export default function App() {
           </div>
         </div>
       </header>
-
       {/* Main Content */}
       <main className="container mx-auto px-6 py-8">
         {/* Search Bar */}

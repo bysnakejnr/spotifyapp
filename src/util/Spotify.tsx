@@ -1,4 +1,5 @@
-let accessToken;
+// src/utils/Spotify.ts
+let accessToken: string | undefined;
 const clientID = import.meta.env.VITE_CLIENT_ID;
 const redirectURI = "http://localhost:3000";
 import { toast } from "sonner";
@@ -8,76 +9,99 @@ const Spotify = {
         if (accessToken) return accessToken;
 
         const tokenInURL = window.location.href.match(/access_token=([^&]*)/);
-        const expirtyTime = window.location.href.match(/expires_in=([^&]*)/);
+        const expiryTime = window.location.href.match(/expires_in=([^&]*)/);
 
-        if(tokenInURL && expirtyTime){
-
+        if (tokenInURL && expiryTime) {
             accessToken = tokenInURL[1];
-            const expiresIn = Number(expirtyTime[1]);
+            const expiresIn = Number(expiryTime[1]);
 
+            // Clear token after expiry
             window.setTimeout(() => (accessToken = ""), expiresIn * 1000);
-            window.history.pushState("Access Token", null, "/");
+
+            // Clean up URL
+            window.history.pushState("Access Token", "", "/");
             return accessToken;
-
         }
+
+        // If no token, redirect for authorization
         const redirect = `https://accounts.spotify.com/authorize?client_id=${clientID}&response_type=token&scope=playlist-modify-public&redirect_uri=${redirectURI}`;
-        window.location.href = redirect
+        window.location.href = redirect;
     },
 
-    search(term: string) {
-        accessToken = Spotify.getAccessToken();
-        return fetch(`https://api.spotify.com/v1/search?type=track&q=${term}`, {
-            method: "GET",
-            headers: {Authorization: `Bearer ${accessToken}`},
-        })
-            .then(res => res.json())
-            .then(json => {
-                if(!json){
-                    console.error("Response Error")
+    async search(term: string) {
+        if (!term) return [];
+
+        if (!accessToken) accessToken = Spotify.getAccessToken();
+        if (!accessToken) return [];
+
+        try {
+            const res = await fetch(
+                `https://api.spotify.com/v1/search?type=track&q=${term}`,
+                {
+                    headers: { Authorization: `Bearer ${accessToken}` },
                 }
-                return json.tracks.items.map(track => ({
-                    id: track.id,
-                    name: track.name,
-                    artist: track.artists[0].name,
-                    album: track.album.name,
-                    duration: track.duration_ms,
-                    albumArt: track.album.images[0].url,
-                    uri: track.uri,
-                }))
-            })
+            );
+
+            const json = await res.json();
+            if (!json.tracks) {
+                toast.error("No tracks found.");
+                return [];
+            }
+
+            return json.tracks.items.map((track: any) => ({
+                id: track.id,
+                name: track.name,
+                artist: track.artists[0].name,
+                album: track.album.name,
+                duration: track.duration_ms,
+                albumArt: track.album.images[0]?.url,
+                uri: track.uri,
+            }));
+        } catch (err) {
+            toast.error("Error fetching songs.");
+            console.error(err);
+            return [];
+        }
     },
 
-    savePlaylist(name, trackUris) {
-        if (!name || !trackUris) return;
-        const aToken = Spotify.getAccessToken();
-        const headers = {Authorization: `Bearer ${aToken}`};
-        let userId;
+    async savePlaylist(name: string, trackUris: string[]) {
+        if (!name || !trackUris?.length) {
+            toast.error("Playlist name or tracks missing!");
+            return;
+        }
 
-        return fetch("https://api.spotify.com/v1/me", {headers: headers})
-            .then(res => res.json())
-            .then(json => {
-                userId = json.id;
-                return fetch(`https://api.spotify.com/v1/users/${userId}/playlists`, {
+        const aToken = Spotify.getAccessToken();
+        if (!aToken) return;
+
+        const headers = { Authorization: `Bearer ${aToken}`, "Content-Type": "application/json" };
+
+        try {
+            const meResponse = await fetch("https://api.spotify.com/v1/me", { headers });
+            const userData = await meResponse.json();
+
+            const createPlaylistResponse = await fetch(
+                `https://api.spotify.com/v1/users/${userData.id}/playlists`,
+                {
                     method: "POST",
-                    headers: {
-                        Authorization: `Bearer ${aToken}`,
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({name: name}),
-                })
-            })
-            .then(res => res.json())
-            .then(json => {
-                const playlistId = json.id;
-                return fetch(`https://api.spotify.com/v1/playlists/${playlistId}/tracks`, {
-                    method: "POST",
-                    headers: {
-                        Authorization: `Bearer ${aToken}`,
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({uris: trackUris}),
-                });
+                    headers,
+                    body: JSON.stringify({ name }),
+                }
+            );
+
+            const playlist = await createPlaylistResponse.json();
+
+            await fetch(`https://api.spotify.com/v1/playlists/${playlist.id}/tracks`, {
+                method: "POST",
+                headers,
+                body: JSON.stringify({ uris: trackUris }),
             });
-    }
-}
-export {Spotify};
+
+            toast.success(`Playlist "${name}" created successfully!`);
+        } catch (err) {
+            toast.error("Error saving playlist.");
+            console.error(err);
+        }
+    },
+};
+
+export { Spotify };

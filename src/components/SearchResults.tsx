@@ -31,12 +31,12 @@ export function SearchResults({ songs, onAddSong, addedSongIds, isSearched }: Se
   }
 
   return (
-    <div className="h-full">
+    <div className="min-h-full">
       <div className="mb-4">
         <h2 className="text-xl text-white">Search Results</h2>
         <p className="text-sm text-zinc-400">{songs.length} songs found</p>
       </div>
-      <ScrollArea className="h-[calc(100%-60px)]">
+      <ScrollArea className="min-h-full h-[calc(100vh-320px)] pr-2">
         <div className="space-y-2 pr-4">
           {songs.map((song) => (
             <SongCard

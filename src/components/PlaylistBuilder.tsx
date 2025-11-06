@@ -6,7 +6,7 @@ import { ScrollArea } from "./ui/scroll-area";
 import { Save, ListMusic, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
-import { Spotify } from "../util/spotify";
+import { Spotify } from "../util/Spotify";
 
 interface PlaylistBuilderProps {
   songs: Song[];
