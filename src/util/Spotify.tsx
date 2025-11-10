@@ -1,7 +1,8 @@
 // src/utils/Spotify.ts
 let accessToken: string | undefined;
 const clientID = import.meta.env.VITE_CLIENT_ID;
-const redirectURI = "http://localhost:3000";
+// const redirectURI = "http://localhost:3000";
+const redirectURI = "https://barismusic.netlify.app";
 import { toast } from "sonner";
 
 const Spotify = {
